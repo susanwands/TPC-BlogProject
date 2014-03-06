@@ -1,0 +1,116 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+
+@model BlogIt.Models.ViewModel
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="container">
+    <div class="row clearfix">
+    
+        <div class="col-md-2 column">
+            <span><img id="kitty" src="http://fc00.deviantart.net/fs70/f/2011/058/e/1/hello_kitty_nerd_by_ladypinkilicious-d3ajpii.png" /></span>
+        </div>
+        <div class="col-md-6 column">
+          
+            <div class="page-header">
+                @foreach (var b in Model.Blogs) { 
+                <h1>@b.BlogName <small>...another fun project by @b.Blogger</small></h1>}
+            </div>
+        </div>
+        
+    </div>
+    <div class="row clearfix">
+        
+        
+    </div>
+    <div class="row clearfix">
+        <div id="newPost" class="col-md-4 column">
+            <h4>Add a new Post</h4>
+            <form method="get" action="Home/CreatePost" role="form">
+                <div class="form-group">
+                    <label for="Title">Title</label><input type="text" class="form-control" id="Title" name="Title" />
+                </div>
+                <div class="form-group">
+                    <label for="Content">Content</label><textarea class="form-control" id="Content" name="Content"></textarea>
+                </div>
+                <button id="submitPost" type="submit" class="btn btn-default">Submit</button>
+            </form>
+        </div>
+        <div class="col-md-8 column">
+            <h3>Posts   <span><button id="makePost" type="submit" class="btn btn-default">Make New Post</button></span></h3>
+
+           
+             <table class="table" > 
+                @foreach (var p in Model.PagedPosts)
+                {
+                 <tr>
+                     <td>
+                        <ul>
+                            <li>
+                                @p.DatePosted.Month / @p.DatePosted.Day / @p.DatePosted.Year - @p.Title
+                            </li>
+                            <li>
+                                @p.Content
+                            </li>
+                        </ul>
+                     </td>
+                     <td>
+                         <form role="form" method="get" action="/Home/EditPost/">
+                             <button value="@p.PostId" id="editPost" type="submit" class="btn btn-default btn-xs" name="PostId">Edit</button>
+                         </form>
+                     </td>
+                     <td>
+                         <form role="form" method="get" action="/Home/DeletePost">
+                             <button id="deletePost" value="@p.PostId" type="submit" class="btn btn-default btn-xs" name="PostId">Delete</button>
+                         </form>
+                     </td>
+                  </tr>
+                    }
+              </table>
+           @Html.PagedListPager(Model.PagedPosts, pPage => Url.Action("Index", new { pPage}))
+            
+        </div> 
+        
+    </div>
+    <div class="row clearfix">
+        <div id="newArticle" class="col-md-4 column">
+            <h4>Add a new Article</h4>
+            <form method="get" action="Home/LinkArticle" role="form">
+                <div class="form-group">
+                    <label for="ArticleTitle">Title</label><input type="text" class="form-control" id="ArticleTitle" name="ArticleTitle" />
+                </div>
+                <div class="form-group">
+                    <label for="ArticleLink">Article Link</label><input type="text" class="form-control" id="ArticleLink" name="ArticleLink" />
+                </div>
+                <button id="submitArticle" type="submit" class="btn btn-default">Submit</button>
+            </form>
+        </div>
+        <div class="col-md-8 column">
+            <h3>Articles    <span><button id="linkArticle" type="submit" class="btn btn-default">Link New Article</button></span></h3>
+           <table class="table">
+            @foreach (var a in Model.PagedArticles) { 
+            <tr>
+               
+                <td><a  href="@a.ArticleLink" target="_blank"/>@a.ArticleTitle</td>
+                <td>
+                    <form method="get" action="Home/EditArticle" role="form">
+                    <button id="editArticle" type="submit" class="btn btn-default btn-xs" name="ArticleId" value="@a.ArticleId">Edit</button>
+                    </form>
+                </td>
+                <td>
+                    <form action="Home/DeleteArticle">
+                        <button id="deleteArticle" type="submit" class="btn btn-default btn-xs" name="ArticleId" value="@a.ArticleId">Delete</button>
+                    </form>
+                </td>
+            </tr>
+                
+            }
+            </table>
+            @Html.PagedListPager(Model.PagedArticles, aPage => Url.Action("Index", new { aPage }))    
+        </div>
+       
+    </div>
+    </div>

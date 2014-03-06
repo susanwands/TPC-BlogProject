@@ -1,0 +1,22 @@
+﻿@model BlogIt.Models.ViewModel
+@{
+    ViewBag.Title = "About";
+}
+
+<div class="container">
+    </div><div class="row clearfix">
+    <div class="col-md-4 column">
+        <br /><br /><br /><br />
+        <h4>Edit Post</h4>
+        <form method="post" action="/Home/EditPost" role="form">
+            <div class="form-group">
+                <label for="Title">Title</label><input type="text" class="form-control"  name="Title" value="@Model.Post.Title"/>
+            </div>
+            <div class="form-group">
+                <label for="Content">Content</label><textarea class="form-control"  name="Content" >@Model.Post.Content</textarea>
+            </div>
+            <button type="submit" class="btn btn-default" name="PostId" value="@Model.Post.PostId">Submit</button>
+        </form>
+    </div>
+</div>
+</div>
